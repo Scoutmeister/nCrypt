@@ -7,6 +7,7 @@ parser = argparse.ArgumentParser(description="File encryption/decrytion program"
 parser.add_argument("filename", help="Enter the name of the file you want to use(include file extention)")
 parser.add_argument("-m", "--mode", help="Choose between 'encrypt' and 'decrypt'")
 parser.add_argument("-k", "--key", action="store_true", help="This flag generates a new encryption key")
+#### Lägg til -a --anon argument för att spela filen med ett annat namn när den är krypterad
 args = parser.parse_args()
 
 # Initializing colorama
