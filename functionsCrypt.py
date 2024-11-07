@@ -37,10 +37,11 @@ def encrypt_file(filename):
         encryptedFileName = filename.split(".")[0] + ".enc"
         os.remove(filename)
 
-        # Encrypt the plaintext and replace it with ciphertext
+        # Encrypt the plaintext and replace it with ciphertext. Add encrypted filename to the end
         with open(encryptedFileName, "wb") as file:
             cipher_text = cipher_suite.encrypt(plaintext)
-            file.write(cipher_text)
+            originalFileNameEncrypt = cipher_suite.encrypt(filename.encode())
+            file.writelines([cipher_text, "\n".encode(),originalFileNameEncrypt])
 
         print(color_green(f"The file '{filename}' has been encrypted to: {encryptedFileName}"))
     #Error handling
