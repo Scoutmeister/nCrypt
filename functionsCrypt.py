@@ -2,21 +2,22 @@ from cryptography.fernet import Fernet
 import os
 
 ## Generate key ##
-def gen_key(keyfilename):
+def gen_key():
     key = Fernet.generate_key()
 
-    with open(keyfilename + ".key", "wb") as file:
+    with open("secret.key", "wb") as file:
         file.write(key)
 
-# Loads the encryption key from secret.key
-with open("secret.key", "rb") as file:
-    key = file.read()
-
-# Creates a Fernet object with the key
-cipher_suite = Fernet(key)
 
 ## Encryption ##
 def encrypt_file(filename):
+    
+    # Loads the encryption key from secret.key
+    with open("secret.key", "rb") as file:
+        key = file.read()
+
+    # Creates a Fernet object with the key
+    cipher_suite = Fernet(key)
 
     try:
         # Reads the content of the file and saves it
@@ -31,13 +32,22 @@ def encrypt_file(filename):
         with open(encryptedFileName, "wb") as file:
             cipher_text = cipher_suite.encrypt(plaintext)
             file.write(cipher_text)
+
+        print(f"The file '{filename}' has been encrypted to: {encryptedFileName}")
+    #Error handling
     except FileNotFoundError:
         print("File not found, make sure to include the full file name(example.txt)")
-    
 
 
 ## Decryption ##
 def decrypt_file(filename):
+            
+    # Loads the encryption key from secret.key
+    with open("secret.key", "rb") as file:
+        key = file.read()
+
+    # Creates a Fernet object with the key
+    cipher_suite = Fernet(key)
 
     try:
         # Reads the content of the file and saves it
@@ -52,6 +62,8 @@ def decrypt_file(filename):
         with open(decryptedFileName, "wb") as file:
             plaintext = cipher_suite.decrypt(cipher_text)
             file.write(plaintext)
+
+        print(f"The file '{filename}' has been decrypted to: {decryptedFileName}")
     #Error handling
     except FileNotFoundError:
         print("File not found, make sure to include the full file name(example.enc)")
