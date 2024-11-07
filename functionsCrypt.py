@@ -1,5 +1,14 @@
 from cryptography.fernet import Fernet
+from colorama import init, Fore, Style
 import os
+
+## Color output functions ##
+
+def color_green(text):
+    return Fore.GREEN + text
+
+def color_red(text):
+    return Fore.RED + text
 
 ## Generate key ##
 def gen_key():
@@ -33,10 +42,10 @@ def encrypt_file(filename):
             cipher_text = cipher_suite.encrypt(plaintext)
             file.write(cipher_text)
 
-        print(f"The file '{filename}' has been encrypted to: {encryptedFileName}")
+        print(color_green(f"The file '{filename}' has been encrypted to: {encryptedFileName}"))
     #Error handling
     except FileNotFoundError:
-        print("File not found, make sure to include the full file name(example.txt)")
+        print(color_red("File not found, make sure to include the full file name(example.txt)"))
 
 
 ## Decryption ##
@@ -63,8 +72,8 @@ def decrypt_file(filename):
             plaintext = cipher_suite.decrypt(cipher_text)
             file.write(plaintext)
 
-        print(f"The file '{filename}' has been decrypted to: {decryptedFileName}")
+        print(color_green(f"The file '{filename}' has been decrypted to: {decryptedFileName}"))
     #Error handling
     except FileNotFoundError:
-        print("File not found, make sure to include the full file name(example.enc)")
+        print(color_red("File not found, make sure to include the full file name(example.enc)"))
 
