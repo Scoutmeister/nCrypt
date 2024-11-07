@@ -1,5 +1,5 @@
 from cryptography.fernet import Fernet
-from colorama import init, Fore, Style
+from colorama import init, Fore
 import os
 
 ## Color output functions ##
