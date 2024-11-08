@@ -92,7 +92,7 @@ class Crypter():
                     cipher_text = file.readlines()
 
                 # Creates name for the new decrypted file
-                decryptedFileName = self.key.decrypt(cipher_text[1].decode())
+                decryptedFileName = self.key.decrypt(cipher_text[1])
                 os.remove(filename)
 
                 # Decrypts the ciphertext and replace it with plaintext
@@ -103,7 +103,7 @@ class Crypter():
             except Exception:
                 print(self.color_red("Error! Can't decrypt file with key provided. Did the key change?"))
                 exit()
-            print(self.color_green(f"The file '{filename}' has been decrypted to: {decryptedFileName}"))
+            print(self.color_green(f"The file '{filename}' has been decrypted to: {decryptedFileName.decode()}"))
         #Error handling
         except FileNotFoundError:
             print(self.color_red("File not found, make sure to include the full file name(example.enc)"))
