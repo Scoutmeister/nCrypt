@@ -1,80 +1,109 @@
 from cryptography.fernet import Fernet
 from colorama import init, Fore
+import random
 import os
 
-## Color output functions ##
 
-def color_green(text):
-    return Fore.GREEN + text
+class Crypter():
 
-def color_red(text):
-    return Fore.RED + text
+    def __init__(self, filename, mode, newkey, anon):
+        self.filename = filename
+        self.mode = mode
+        self.newkey = newkey
+        if self.newkey and mode != "decrypt":
+            self.gen_key()
+            print(self.color_green("Generating new key"))
+        elif self.newkey and mode == "decrypt":
+            print(self.color_red("For safety purposes you can't change the key before decryption"))
+            exit()
+        else:
+            pass
+        self.anon = anon
+        self.key = self.load_key()
 
-## Generate key ##
-def gen_key():
-    key = Fernet.generate_key()
+    ## Color output methods ##
+    def color_green(self, text):
+        return Fore.GREEN + text
+    # Returns red text    
+    def color_red(self, text):
+        return Fore.RED + text
 
-    with open("secret.key", "wb") as file:
-        file.write(key)
+    ## Method for loading key into object ##
+    def load_key(self):
 
+        if os.path.exists("secret.key"):
+            # Loads the encryption key from secret.key
+            with open("secret.key", "rb") as file:
+                key = file.read()
 
-## Encryption ##
-def encrypt_file(filename):
-    
-    # Loads the encryption key from secret.key
-    with open("secret.key", "rb") as file:
-        key = file.read()
+            # Creates a Fernet object with the key
+            cipher_suite = Fernet(key)
+            return cipher_suite
+        else:
+            self.gen_key()
+            ##### Problems with funcion reading the file too fast and returning a None value if i rerun the funtion after creating key
+            print(self.color_green("No excisting key found, creating key and exiting"))
+            exit()
 
-    # Creates a Fernet object with the key
-    cipher_suite = Fernet(key)
+    ## Method for generating new key ##
+    def gen_key(self):
+        key = Fernet.generate_key()
 
-    try:
-        # Reads the content of the file and saves it
-        with open(filename, "rb") as file:
-            plaintext = file.read()
+        with open("secret.key", "wb") as file:
+            file.write(key)
 
-        # Creates name for the new encrypted file
-        encryptedFileName = filename.split(".")[0] + ".enc"
-        os.remove(filename)
+    ## Method for encrypting file
+    def encrypt_file(self):
+        filename = self.filename
 
-        # Encrypt the plaintext and replace it with ciphertext. Add encrypted filename to the end
-        with open(encryptedFileName, "wb") as file:
-            cipher_text = cipher_suite.encrypt(plaintext)
-            originalFileNameEncrypt = cipher_suite.encrypt(filename.encode())
-            file.writelines([cipher_text, "\n".encode(),originalFileNameEncrypt])
+        try:
+            # Reads the content of the file and saves it
+            with open(filename, "rb") as file:
+                plaintext = file.read()
 
-        print(color_green(f"The file '{filename}' has been encrypted to: {encryptedFileName}"))
-    #Error handling
-    except FileNotFoundError:
-        print(color_red("File not found, make sure to include the full file name(example.txt)"))
+            # Creates name for the new encrypted file
+            if self.anon:
+                encryptedFileName = str(random.randint(1,10000000)) + ".enc"
+            else:
+                encryptedFileName = filename.split(".")[0] + ".enc"
+            os.remove(filename)
 
+            # Encrypt the plaintext and replace it with ciphertext. Add encrypted filename to the end
+            with open(encryptedFileName, "wb") as file:
+                cipher_text = self.key.encrypt(plaintext)
+                originalFileNameEncrypt = self.key.encrypt(filename.encode())
+                file.writelines([cipher_text, "\n".encode(),originalFileNameEncrypt])
 
-## Decryption ##
-def decrypt_file(filename):
-            
-    # Loads the encryption key from secret.key
-    with open("secret.key", "rb") as file:
-        key = file.read()
+            print(self.color_green(f"The file '{filename}' has been encrypted to: {encryptedFileName}"))
+        #Error handling
+        except FileNotFoundError:
+            print(self.color_red("File not found, make sure to include the full file name(example.txt)"))
 
-    # Creates a Fernet object with the key
-    cipher_suite = Fernet(key)
+    ## Method for decrypting file
+    def decrypt_file(self):
+        filename = self.filename
+            # Loads the encryption key from secret.key
 
-    try:
-        # Reads the content of the file and saves it
-        with open(filename, "rb") as file:
-            cipher_text = file.readlines()
+        try:
+            try:
 
-        # Creates name for the new decrypted file
-        decryptedFileName = cipher_suite.decrypt(cipher_text[1].decode())
-        os.remove(filename)
+                # Reads the content of the file and saves it
+                with open(filename, "rb") as file:
+                    cipher_text = file.readlines()
 
-        # Decrypts the ciphertext and replace it with plaintext
-        with open(decryptedFileName, "wb") as file:
-            plaintext = cipher_suite.decrypt(cipher_text[0].strip())
-            file.write(plaintext)
+                # Creates name for the new decrypted file
+                decryptedFileName = self.key.decrypt(cipher_text[1].decode())
+                os.remove(filename)
 
-        print(color_green(f"The file '{filename}' has been decrypted to: {decryptedFileName}"))
-    #Error handling
-    except FileNotFoundError:
-        print(color_red("File not found, make sure to include the full file name(example.enc)"))
-
+                # Decrypts the ciphertext and replace it with plaintext
+                with open(decryptedFileName, "wb") as file:
+                    plaintext = self.key.decrypt(cipher_text[0].strip())
+                    file.write(plaintext)
+            # Error for if key can't decrypt the file
+            except Exception:
+                print(self.color_red("Error! Can't decrypt file with key provided. Did the key change?"))
+                exit()
+            print(self.color_green(f"The file '{filename}' has been decrypted to: {decryptedFileName}"))
+        #Error handling
+        except FileNotFoundError:
+            print(self.color_red("File not found, make sure to include the full file name(example.enc)"))
