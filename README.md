@@ -7,30 +7,29 @@
 
 - Simple tool using symmetric cryptography
 - Features Encryption and Decryption
-- Option for anonymous name for encrypted files to prevent sharing unwanted information
+- Anonymous naming of encrypted files
 - Safety checks implemented to prevent accedental misuse
 
 
 ## ℹ️ Overview
 
-This is a simple tool made for encrypting and decrypting files run completely from the CLI.
-
+This is a simple tool made for encrypting and decrypting files run completely from the CLI. It uses symmetric cryptography to read the byte information in any file and encrypt it. There is an option for anonymous naming of encrypted files to prevent sharing unwanted information.
 
 ## 🚀 Usage
 
 ```bash
 python nCrypt.py example.txt -m encrypt -a
 ```
-^ This code will encrypt the 'example.txt' file and give it an anonymous name
+This command will encrypt the 'example.txt' file and give it an anonymous name
 
 
 ## ⬇️ Installation
 
 ```bash
-git clone https://github.com/Scoutmeister/slutprojektAppliedScript.git
+git clone https://github.com/Scoutmeister/nCrypt.git
 ```
+Clone the github repo
 ```bash
 pip install -r requirements.txt
 ```
-
-Clone the github repo and install the requirements necessary for running the program using the commands above
+Install the python packages needed for the program to run correctly
