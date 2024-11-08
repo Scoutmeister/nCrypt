@@ -28,6 +28,13 @@ class Crypter():
     def color_red(self, text):
         return Fore.RED + text
 
+    ## Method for generating new key ##
+    def gen_key(self):
+        key = Fernet.generate_key()
+
+        with open("secret.key", "wb") as file:
+            file.write(key)
+
     ## Method for loading key into object ##
     def load_key(self):
 
@@ -41,16 +48,9 @@ class Crypter():
             return cipher_suite
         else:
             self.gen_key()
-            ##### Problems with funcion reading the file too fast and returning a None value if i rerun the funtion after creating key
-            print(self.color_green("No excisting key found, creating key and exiting"))
-            exit()
+            print(self.color_green("No excisting key found, creating key"))
+            return self.load_key()
 
-    ## Method for generating new key ##
-    def gen_key(self):
-        key = Fernet.generate_key()
-
-        with open("secret.key", "wb") as file:
-            file.write(key)
 
     ## Method for encrypting file
     def encrypt_file(self):
