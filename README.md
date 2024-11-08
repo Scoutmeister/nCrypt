@@ -1,6 +1,6 @@
 # 📦 nCrypt
 
-![alt text](https://openclipart.org/image/800px/224728)
+![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Wola_Gu%C5%82owska-trumna.jpg/220px-Wola_Gu%C5%82owska-trumna.jpg)
 
 
 ## 🌟 Highlights
