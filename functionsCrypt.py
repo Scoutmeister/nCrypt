@@ -99,11 +99,11 @@ class Crypter():
                 with open(decryptedFileName, "wb") as file:
                     plaintext = self.key.decrypt(cipher_text[0].strip())
                     file.write(plaintext)
-            # Error for if key can't decrypt the file
-            except Exception:
-                print(self.color_red("Error! Can't decrypt file with key provided. Did the key change?"))
-                exit()
+            # Error handling
+            except FileNotFoundError:
+                print(self.color_red("File not found, make sure to include the full file name(example.enc)"))
             print(self.color_green(f"The file '{filename}' has been decrypted to: {decryptedFileName.decode()}"))
-        #Error handling
-        except FileNotFoundError:
-            print(self.color_red("File not found, make sure to include the full file name(example.enc)"))
+        # Error for if key can't decrypt the file
+        except Exception:
+                print(self.color_red("Error! Can't decrypt file with key provided."))
+                exit()

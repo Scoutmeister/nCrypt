@@ -5,7 +5,7 @@
 
 ## 🌟 Highlights
 
-- Simple tool using symmetric cryptography
+- Simple tool for symmetric cryptography
 - Features Encryption and Decryption
 - Anonymous naming of encrypted files
 - Safety checks implemented to prevent accedental misuse
@@ -13,7 +13,7 @@
 
 ## ℹ️ Overview
 
-This is a simple tool made for encrypting and decrypting files run completely from the CLI. It uses symmetric cryptography to read the byte information in any file and encrypt it. There is an option for anonymous naming of encrypted files to prevent sharing unwanted information.
+This is a simple tool made for encrypting and decrypting files run completely from the CLI. It uses symmetric cryptography to read the byte information in any file and encrypt it. There is an option for anonymous naming of encrypted files to prevent sharing unwanted information. The default mode is encryption if the -m flag is not specified.
 
 ## 🚀 Usage
 
