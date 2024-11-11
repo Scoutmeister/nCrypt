@@ -85,25 +85,23 @@ class Crypter():
             # Loads the encryption key from secret.key
 
         try:
-            try:
+            # Reads the content of the file and saves it
+            with open(filename, "rb") as file:
+                cipher_text = file.readlines()
 
-                # Reads the content of the file and saves it
-                with open(filename, "rb") as file:
-                    cipher_text = file.readlines()
+            # Creates name for the new decrypted file
+            decryptedFileName = self.key.decrypt(cipher_text[1])
+            os.remove(filename)
 
-                # Creates name for the new decrypted file
-                decryptedFileName = self.key.decrypt(cipher_text[1])
-                os.remove(filename)
-
-                # Decrypts the ciphertext and replace it with plaintext
-                with open(decryptedFileName, "wb") as file:
-                    plaintext = self.key.decrypt(cipher_text[0].strip())
-                    file.write(plaintext)
-            # Error handling
-            except FileNotFoundError:
-                print(self.color_red("File not found, make sure to include the full file name(example.enc)"))
-            print(self.color_green(f"The file '{filename}' has been decrypted to: {decryptedFileName.decode()}"))
+            # Decrypts the ciphertext and replace it with plaintext
+            with open(decryptedFileName, "wb") as file:
+                plaintext = self.key.decrypt(cipher_text[0].strip())
+                file.write(plaintext)
+        # Error handling
+        except FileNotFoundError:
+            print(self.color_red("File not found, make sure to include the full file name(example.enc)"))
         # Error for if key can't decrypt the file
         except Exception:
                 print(self.color_red("Error! Can't decrypt file with key provided."))
                 exit()
+        print(self.color_green(f"The file '{filename}' has been decrypted to: {decryptedFileName.decode()}"))
