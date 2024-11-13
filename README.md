@@ -13,14 +13,14 @@
 
 ## ℹ️ Overview
 
-This is a simple tool made for encrypting and decrypting files run completely from the CLI. It reads the bytes in a file and encrypts/decrypts it using key derived from a password. There is an option for anonymous naming of encrypted files to prevent sharing unwanted information. The default mode is encryption if the -m flag is not specified.
+This is a simple tool made for encrypting and decrypting files run completely from the CLI. It reads the bytes in a file and encrypts/decrypts it using a key derived from a password. There is an option for anonymous naming of encrypted files to prevent sharing unwanted information. The default mode is encryption if the -m flag is not specified.
 
 ## 🚀 Usage
 
 ```bash
 python nCrypt.py example.txt -a -p hello123
 ```
-This command will encrypt the 'example.txt' file with a key derived from the password 'hello123', and give it an anonymous name
+This command will encrypt the 'example.txt' file with a key derived from the password 'hello123', and give it an anonymous name.
 
 
 ## ⬇️ Installation
