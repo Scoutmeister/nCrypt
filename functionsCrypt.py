@@ -27,7 +27,7 @@ class Crypter():
     ## Method for loading key into object ##
     def load_key(self, pwd):
 
-        salt = b"\xec"
+        salt = b'2\xd2\x08\xc5\xf4K\xf5;\x82[\xad"\x84;l\xc9' # !! Dont know how i would load a random salt without overwriting it or saving it to a file
         kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=480000)
         pwd = b64encode(bytes(pwd, "ASCII"))
         key = base64.urlsafe_b64encode(kdf.derive(pwd))

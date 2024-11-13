@@ -6,7 +6,6 @@ parser = argparse.ArgumentParser(description="My file encryption/decrytion progr
 # Adding arguments 
 parser.add_argument("filename", help="Enter the name of the file you want to use(include file extention)")
 parser.add_argument("-m", "--mode", choices=["encrypt", "decrypt"], help="Choose mode. The default mode is 'encrypt' if flag is not present")
-# parser.add_argument("-k", "--key", action="store_true", help="This flag generates a new encryption key")
 parser.add_argument("-a", "--anonymous", action="store_true", help="Creates random encrypted file name if flag is present, does nothing if mode is decrypt")
 parser.add_argument("-p", "--password", required=True, help="Password from which the key is derived from")
 args = parser.parse_args()
