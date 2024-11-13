@@ -92,6 +92,7 @@ class Crypter():
         # Error handling
         except FileNotFoundError:
             print(self.color_red("File not found, make sure to include the full file name(example.enc)"))
+            exit()
         # Error for if key can't decrypt the file
         except Exception:
                 print(self.color_red("Error! Can't decrypt file with key provided, did you type the right password?"))
