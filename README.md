@@ -7,7 +7,7 @@
 
 - Simple tool for symmetric cryptography
 - Features Encryption and Decryption
-- Derives cryptography key using passwords
+- Derives cryptography key from passwords
 - Anonymous naming of encrypted files
 
 
