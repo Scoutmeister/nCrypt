@@ -6,6 +6,7 @@ import base64
 from base64 import b64encode
 import random
 import os
+from uuid import getnode as get_mac
 
 
 class Crypter():
@@ -27,7 +28,7 @@ class Crypter():
     ## Method for loading key into object ##
     def load_key(self, pwd):
 
-        salt = b'2\xd2\x08\xc5\xf4K\xf5;\x82[\xad"\x84;l\xc9' # !! Dont know how i would load a random salt without overwriting it or saving it to a file
+        salt = str(get_mac()).encode() # makes the MAC address of the device the salt, my solution to each user getting a different salt
         kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=480000)
         pwd = b64encode(bytes(pwd, "ASCII"))
         key = base64.urlsafe_b64encode(kdf.derive(pwd))
@@ -47,7 +48,7 @@ class Crypter():
             if self.anon:
                 encryptedFileName = str(random.randint(1,10000000)) + ".enc"
             else:
-                encryptedFileName = filename.split(".")[0] + ".enc"
+                encryptedFileName = filename.split(".")[0] + ".enc" # Problem if autocompleting in powershell
             os.remove(filename)
 
             # Encrypt the plaintext and replace it with ciphertext. Add encrypted filename to the end

@@ -10,7 +10,7 @@ parser.add_argument("-a", "--anonymous", action="store_true", help="Creates rand
 parser.add_argument("-p", "--password", required=True, help="Password from which the key is derived from")
 args = parser.parse_args()
 
-# Initializing colorama
+# Initializing colorama 
 init()
 
 # Creating Crypter object with argparse inputs
