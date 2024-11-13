@@ -2,17 +2,19 @@ from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from colorama import init, Fore
+from pathlib import Path
 import base64
 from base64 import b64encode
 import random
 import os
+
 from uuid import getnode as get_mac
 
 
 class Crypter():
 
     def __init__(self, filename, mode, anon, password):
-        self.filename = filename
+        self.filename = Path(filename)
         self.mode = mode
         self.anon = anon
         self.password = password
@@ -46,15 +48,15 @@ class Crypter():
 
             # Creates name for the new encrypted file
             if self.anon:
-                encryptedFileName = str(random.randint(1,10000000)) + ".enc"
+                encryptedFileName = "\\".join(str(self.filename).split("\\")[:-1]) + "\\" + str(random.randint(1,10000000)) + ".enc"
             else:
-                encryptedFileName = filename.split(".")[0] + ".enc" # Problem if autocompleting in powershell
+                encryptedFileName = "\\".join(str(self.filename).split("\\")[:-1]) + "\\" + filename.name.split(".")[0] + ".enc"
             os.remove(filename)
 
             # Encrypt the plaintext and replace it with ciphertext. Add encrypted filename to the end
             with open(encryptedFileName, "wb") as file:
                 cipher_text = self.key.encrypt(plaintext)
-                originalFileNameEncrypt = self.key.encrypt(filename.encode())
+                originalFileNameEncrypt = self.key.encrypt(str(filename).encode())
                 file.writelines([cipher_text, "\n".encode(),originalFileNameEncrypt])
 
             print(self.color_green(f"The file '{filename}' has been encrypted to: {encryptedFileName}"))
