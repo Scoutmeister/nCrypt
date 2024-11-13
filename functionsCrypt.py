@@ -30,7 +30,8 @@ class Crypter():
     ## Method for loading key into object ##
     def load_key(self, pwd):
 
-        salt = str(get_mac()).encode() # makes the MAC address of the device the salt, my solution to each user getting a different salt
+        # Makes the MAC address of the device the salt, this means however that you cant decrypt a file on another computer with the same password, bug or feature, you decide
+        salt = str(get_mac()).encode()
         kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=480000)
         pwd = b64encode(bytes(pwd, "UTF-8"))
         key = base64.urlsafe_b64encode(kdf.derive(pwd))
