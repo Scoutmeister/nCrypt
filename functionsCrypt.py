@@ -32,7 +32,7 @@ class Crypter():
 
         salt = str(get_mac()).encode() # makes the MAC address of the device the salt, my solution to each user getting a different salt
         kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=480000)
-        pwd = b64encode(bytes(pwd, "ASCII"))
+        pwd = b64encode(bytes(pwd, "UTF-8"))
         key = base64.urlsafe_b64encode(kdf.derive(pwd))
         cipher_suite = Fernet(key)
         return cipher_suite
@@ -47,10 +47,18 @@ class Crypter():
                 plaintext = file.read()
 
             # Creates name for the new encrypted file
+            # This code is very ugly but i was not sure how to solve the problem of formatting the name if the file is in a folder
+            filtering = "\\".join(str(self.filename).split("\\")[:-1])
             if self.anon:
-                encryptedFileName = "\\".join(str(self.filename).split("\\")[:-1]) + "\\" + str(random.randint(1,10000000)) + ".enc"
+                if "\\" in str(filename):
+                    encryptedFileName = filtering + "\\" + str(random.randint(1,10000000)) + ".enc"
+                else:
+                    encryptedFileName = filtering + str(random.randint(1,10000000)) + ".enc"
             else:
-                encryptedFileName = "\\".join(str(self.filename).split("\\")[:-1]) + "\\" + filename.name.split(".")[0] + ".enc"
+                if "\\" in str(filename):
+                    encryptedFileName = filtering + "\\" + filename.name.split(".")[0] + ".enc"
+                else:
+                    encryptedFileName = filtering + filename.name.split(".")[0] + ".enc"
             os.remove(filename)
 
             # Encrypt the plaintext and replace it with ciphertext. Add encrypted filename to the end
