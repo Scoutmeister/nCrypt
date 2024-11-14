@@ -7,7 +7,6 @@ import base64
 from base64 import b64encode
 import random
 import os
-
 from uuid import getnode as get_mac
 
 
@@ -30,7 +29,7 @@ class Crypter():
     ## Method for loading key into object ##
     def load_key(self, pwd):
 
-        # Makes the MAC address of the device the salt, this means however that you cant decrypt a file on another computer with the same password, bug or feature, you decide
+        # Uses MAC address for salt, this means you can't decrypt a file on another computer
         salt = str(get_mac()).encode()
         kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=480000)
         pwd = b64encode(bytes(pwd, "UTF-8"))
@@ -48,8 +47,6 @@ class Crypter():
                 plaintext = file.read()
 
             # Creates name for the new encrypted file
-            # This code is very ugly but i was not sure how to solve the problem of formatting the name if the file is in a folder
-            # filtering = "\\".join(str(self.filename).split("\\")[:-1])
             filtering = "/".join(filename.parts[:-1]) + "/"
             if self.anon:
                 if "\\" in str(filename) or "/" in str(filename):
