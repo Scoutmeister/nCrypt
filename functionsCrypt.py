@@ -49,17 +49,18 @@ class Crypter():
 
             # Creates name for the new encrypted file
             # This code is very ugly but i was not sure how to solve the problem of formatting the name if the file is in a folder
-            filtering = "\\".join(str(self.filename).split("\\")[:-1])
+            # filtering = "\\".join(str(self.filename).split("\\")[:-1])
+            filtering = "/".join(filename.parts[:-1]) + "/"
             if self.anon:
-                if "\\" in str(filename):
-                    encryptedFileName = filtering + "\\" + str(random.randint(1,10000000)) + ".enc"
-                else:
+                if "\\" in str(filename) or "/" in str(filename):
                     encryptedFileName = filtering + str(random.randint(1,10000000)) + ".enc"
-            else:
-                if "\\" in str(filename):
-                    encryptedFileName = filtering + "\\" + filename.name.split(".")[0] + ".enc"
                 else:
-                    encryptedFileName = filtering + filename.name.split(".")[0] + ".enc"
+                    encryptedFileName = str(random.randint(1,10000000)) + ".enc"
+            else:
+                if "\\" in str(filename) or "/" in str(filename):
+                    encryptedFileName = filtering + filename.stem + ".enc"
+                else:
+                    encryptedFileName = filename.stem + ".enc"
             os.remove(filename)
 
             # Encrypt the plaintext and replace it with ciphertext. Add encrypted filename to the end
